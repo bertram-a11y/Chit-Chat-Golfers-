@@ -14,3 +14,36 @@ message GreeterRequest{
 message GreeterResponse{
     string message = 1;
 }
+
+service ChatService{
+    rpc Chat(stream ClientEvent) returns (stream ServerEvent);
+}
+
+message ClientEvent{
+    JoinRequest join = 1;
+    PublishRequest publish = 2;
+    LeaveRequest leave = 3;
+}
+
+enum EventType {
+    EVENT_TYPE_UNSPECIFIED = 0;
+    JOINED = 1;
+    PUBLISHED = 2;
+    LEFT = 3;
+}
+
+message JoinRequest{}
+
+message PublishRequest{
+    string content = 1;
+}
+
+message LeaveRequest{}
+
+message ServerEvent{
+    EventType type = 1;
+    string content = 2;
+}
+
+
+

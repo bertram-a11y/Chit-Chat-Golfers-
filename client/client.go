@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	proto "chit-chat/grpc"
@@ -22,11 +23,15 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	res, err := client.Greeter(ctx, &proto.GreeterRequest{Name: "World"})
+	username, err := os.Hostname()
+	if err != nil {
+		log.Fatalf("Failed to get hostname: %v", err)
+	}
+
+	res, err := client.Greeter(ctx, &proto.GreeterRequest{Name: username})
 	if err != nil {
 		log.Fatalf("Error calling Greeter: %v", err)
 	}
 
-	log.Printf("Response: %v", res)
-
+	log.Printf("%v", res)
 }
