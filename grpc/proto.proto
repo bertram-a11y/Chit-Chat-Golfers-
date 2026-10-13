@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package chat;
+option go_package = "chit-chat/grpc;chatpb";
+
+service Greeter{
+    rpc Greeter (GreeterRequest) returns (GreeterResponse);
+}
+
+message GreeterRequest{
+    string name = 1;
+}
+
+message GreeterResponse{
+    string message = 1;
+}
