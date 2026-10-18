@@ -3,27 +3,27 @@ syntax = "proto3";
 package chat;
 option go_package = "chit-chat/grpc;chatpb";
 
-service Greeter{
-    rpc Greeter (GreeterRequest) returns (GreeterResponse);
-}
-
-message GreeterRequest{
-    string name = 1;
-}
-
-message GreeterResponse{
-    string message = 1;
-}
-
-service ChatService{
+service ChatService {
     rpc Chat(stream ClientEvent) returns (stream ServerEvent);
 }
 
-message ClientEvent{
-    JoinRequest join = 1;
-    PublishRequest publish = 2;
-    LeaveRequest leave = 3;
+message ClientEvent {
+    string client_id = 1;
+    int64 lamport_time = 2;
+    oneof event {
+        JoinRequest join = 3;
+        PublishRequest publish = 4;
+        LeaveRequest leave = 5;
+    }
 }
+
+message JoinRequest {}
+
+message PublishRequest {
+    string content = 1;
+}
+
+message LeaveRequest {}
 
 enum EventType {
     EVENT_TYPE_UNSPECIFIED = 0;
@@ -32,18 +32,9 @@ enum EventType {
     LEFT = 3;
 }
 
-message JoinRequest{}
-
-message PublishRequest{
-    string content = 1;
-}
-
-message LeaveRequest{}
-
-message ServerEvent{
+message ServerEvent {
     EventType type = 1;
-    string content = 2;
+    string client_id = 2;
+    string content = 3;
+    int64 lamport_time = 4;
 }
-
-
-

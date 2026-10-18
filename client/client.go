@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
+	"io"
 	"log"
-	"os"
-	"time"
 
 	proto "chit-chat/grpc"
 
@@ -13,25 +14,37 @@ import (
 )
 
 func main() {
+	id := flag.String("id", "", "your participant name")
+	flag.Parse()
+
 	conn, err := grpc.NewClient("localhost:5051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("Not Working: %v", err)
+		log.Fatalf("Could not connect: %v", err)
 	}
+	defer conn.Close()
 
-	client := proto.NewGreeterClient(conn)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	username, err := os.Hostname()
+	stream, err := proto.NewChatServiceClient(conn).Chat(context.Background())
 	if err != nil {
-		log.Fatalf("Failed to get hostname: %v", err)
+		log.Fatalf("Could not open chat stream: %v", err)
 	}
 
-	res, err := client.Greeter(ctx, &proto.GreeterRequest{Name: username})
+	err = stream.Send(&proto.ClientEvent{
+		ClientId:    *id,
+		LamportTime: 1,
+		Event:       &proto.ClientEvent_Join{Join: &proto.JoinRequest{}},
+	})
 	if err != nil {
-		log.Fatalf("Error calling Greeter: %v", err)
+		log.Fatalf("Could not send join: %v", err)
 	}
 
-	log.Printf("%v", res)
+	for {
+		ev, err := stream.Recv()
+		if err == io.EOF {
+			return
+		}
+		if err != nil {
+			log.Fatalf("Connection ended: %v", err)
+		}
+		fmt.Printf("[t=%d] %s\n", ev.GetLamportTime(), ev.GetContent())
+	}
 }
