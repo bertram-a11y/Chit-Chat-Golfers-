@@ -1,0 +1,37 @@
+2026/10/23 12:13:47 [Server] event=START address=localhost:5051
+2026/10/23 12:13:57 [Server] event=CONNECT client=Alice
+2026/10/23 12:13:57 [Server] event=BROADCAST_JOIN client=Alice
+2026/10/23 12:13:57 [Server] event=DELIVER client=Alice lamport=3
+2026/10/23 12:14:04 [Server] event=CONNECT client=Bob
+2026/10/23 12:14:04 [Server] event=BROADCAST_JOIN client=Bob
+2026/10/23 12:14:04 [Server] event=DELIVER client=Alice lamport=5
+2026/10/23 12:14:04 [Server] event=DELIVER client=Bob lamport=5
+2026/10/23 12:14:14 [Server] event=PUBLISH client=Alice content="Hey Bob"
+2026/10/23 12:14:14 [Server] event=DELIVER client=Alice lamport=9
+2026/10/23 12:14:14 [Server] event=DELIVER client=Bob lamport=9
+2026/10/23 12:14:26 [Server] event=CONNECT client=Carol
+2026/10/23 12:14:26 [Server] event=BROADCAST_JOIN client=Carol
+2026/10/23 12:14:26 [Server] event=DELIVER client=Alice lamport=11
+2026/10/23 12:14:26 [Server] event=DELIVER client=Bob lamport=11
+2026/10/23 12:14:26 [Server] event=DELIVER client=Carol lamport=11
+2026/10/23 12:14:37 [Server] event=PUBLISH client=Bob content="Hey everyone"
+2026/10/23 12:14:37 [Server] event=DELIVER client=Alice lamport=15
+2026/10/23 12:14:37 [Server] event=DELIVER client=Bob lamport=15
+2026/10/23 12:14:37 [Server] event=DELIVER client=Carol lamport=15
+2026/10/23 12:14:48 [Server] event=PUBLISH client=Carol content="Hello from Carol"
+2026/10/23 12:14:48 [Server] event=DELIVER client=Alice lamport=19
+2026/10/23 12:14:48 [Server] event=DELIVER client=Bob lamport=19
+2026/10/23 12:14:48 [Server] event=DELIVER client=Carol lamport=19
+2026/10/23 12:14:56 [Server] event=DISCONNECT client=Carol
+2026/10/23 12:14:56 [Server] event=BROADCAST_LEAVE client=Carol
+2026/10/23 12:14:56 [Server] event=DELIVER client=Alice lamport=23
+2026/10/23 12:14:56 [Server] event=DELIVER client=Bob lamport=23
+2026/10/23 12:15:07 [Server] event=PUBLISH client=Alice content="Carol has left now"
+2026/10/23 12:15:07 [Server] event=DELIVER client=Alice lamport=27
+2026/10/23 12:15:07 [Server] event=DELIVER client=Bob lamport=27
+2026/10/23 12:15:09 [Server] event=DISCONNECT client=Alice
+2026/10/23 12:15:09 [Server] event=BROADCAST_LEAVE client=Alice
+2026/10/23 12:15:09 [Server] event=DELIVER client=Bob lamport=31
+2026/10/23 12:15:14 [Server] event=DISCONNECT client=Bob
+2026/10/23 12:15:14 [Server] event=BROADCAST_LEAVE client=Bob
+2026/10/23 12:15:21 [Server] event=SHUTDOWN server stopping

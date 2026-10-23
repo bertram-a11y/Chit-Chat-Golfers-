@@ -1,0 +1,11 @@
+2026/10/23 12:14:04 [Client] event=SEND_JOIN client=Bob lamport=1
+2026/10/23 12:14:04 [Client] event=RECEIVE client=Bob lamport=5 local=6 content="Participant Bob joined Chit Chat at logical time 5"
+2026/10/23 12:14:14 [Client] event=RECEIVE client=Bob lamport=9 local=10 content="Alice: Hey Bob"
+2026/10/23 12:14:26 [Client] event=RECEIVE client=Bob lamport=11 local=12 content="Participant Carol joined Chit Chat at logical time 11"
+2026/10/23 12:14:37 [Client] event=SEND_PUBLISH client=Bob lamport=13 content="Hey everyone"
+2026/10/23 12:14:37 [Client] event=RECEIVE client=Bob lamport=15 local=16 content="Bob: Hey everyone"
+2026/10/23 12:14:48 [Client] event=RECEIVE client=Bob lamport=19 local=20 content="Carol: Hello from Carol"
+2026/10/23 12:14:56 [Client] event=RECEIVE client=Bob lamport=23 local=24 content="Participant Carol left Chit Chat at logical time 23"
+2026/10/23 12:15:07 [Client] event=RECEIVE client=Bob lamport=27 local=28 content="Alice: Carol has left now"
+2026/10/23 12:15:09 [Client] event=RECEIVE client=Bob lamport=31 local=32 content="Participant Alice left Chit Chat at logical time 31"
+2026/10/23 12:15:14 [Client] event=SEND_LEAVE client=Bob lamport=33

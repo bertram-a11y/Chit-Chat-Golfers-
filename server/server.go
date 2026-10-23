@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net"
+	"os"
+	"os/signal"
 	"sync"
-	"fmt"
+	"syscall"
 	"unicode/utf8"
 
 	proto "chit-chat/grpc"
@@ -110,7 +113,7 @@ func (s *Server) Chat(stream proto.ChatService_ChatServer) error {
 			return err
 		}
 		s.receive(event.GetLamportTime())
-			if event.GetLeave() != nil {
+		if event.GetLeave() != nil {
 			return nil // the deferred func broadcasts the leave
 		}
 
@@ -135,6 +138,18 @@ func (s *Server) Chat(stream proto.ChatService_ChatServer) error {
 }
 
 func main() {
+	if err := os.MkdirAll("logs", 0o755); err != nil {
+		log.Fatalf("could not create logs directory: %v", err)
+	}
+
+	f, err := os.OpenFile("logs/server.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
+	if err != nil {
+		log.Fatalf("could not open log file: %v", err)
+	}
+
+	defer f.Close()
+	log.SetOutput(io.MultiWriter(os.Stdout, f))
+
 	lis, err := net.Listen("tcp", "localhost:5051")
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
@@ -145,7 +160,16 @@ func main() {
 		clients: make(map[string]chan *proto.ServerEvent),
 	})
 
-	log.Println("Server is running on localhost:5051")
+	log.Printf("[Server] event=START address=localhost:5051")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-sigs
+		log.Printf("[Server] event=SHUTDOWN server stopping")
+		server.Stop()
+	}()
+
 	if err := server.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}

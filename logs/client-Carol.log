@@ -1,0 +1,6 @@
+2026/10/23 12:14:26 [Client] event=SEND_JOIN client=Carol lamport=1
+2026/10/23 12:14:26 [Client] event=RECEIVE client=Carol lamport=11 local=12 content="Participant Carol joined Chit Chat at logical time 11"
+2026/10/23 12:14:37 [Client] event=RECEIVE client=Carol lamport=15 local=16 content="Bob: Hey everyone"
+2026/10/23 12:14:48 [Client] event=SEND_PUBLISH client=Carol lamport=17 content="Hello from Carol"
+2026/10/23 12:14:48 [Client] event=RECEIVE client=Carol lamport=19 local=20 content="Carol: Hello from Carol"
+2026/10/23 12:14:56 [Client] event=SEND_LEAVE client=Carol lamport=21

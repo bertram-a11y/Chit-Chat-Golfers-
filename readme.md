@@ -7,19 +7,19 @@ A simple Go application with a server and client.
 1. Start the server:
 
    ```bash
-   go run server/server .
+   go run server/server.go
    ```
 
 2. Start a client with your name:
 
    ```bash
-   go run client/client -id <your name>
+   go run client/client.go -id <your name>
    ```
 
    Example:
 
    ```bash
-   go run client/client -id alice
+   go run client/client.go -id alice
    ```
 
 ## Notes
